@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import react, { useState } from 'react';
 import './App.css';
 import axios from 'axios';
 import ChatGPT from './gpt';
@@ -6,10 +6,11 @@ import 'isomorphic-fetch';
 import { marked } from 'marked';
 
 
-
 function App() {
+
+  const [markdownData, setMarkdownData] = useState([]);
   const [githubLink, setGithubLink] = useState('');
-  const [markdownData, setManrkdownData] = useState([]);
+
 
   const handleInputChange = (e) => {
     setGithubLink(e.target.value);
