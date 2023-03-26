@@ -2,11 +2,12 @@ import { useState } from 'react';
 import './App.css';
 import axios from 'axios';
 import ChatGPT from './gpt';
-import { Octokit } from "@octokit/rest";
+import 'isomorphic-fetch';
+
 
 function App() {
   const [githubLink, setGithubLink] = useState('');
-  const [markdownData, setMarkdownData] = useState([]);
+  const [markdownData, setManrkdownData] = useState([]);
 
   const handleInputChange = (e) => {
     setGithubLink(e.target.value);
@@ -18,26 +19,21 @@ function App() {
     const owner = repoInfo[0];
     const repo = repoInfo[1];
 
-    const octokit = new Octokit();
     try {
-      const { data: files } = await octokit.rest.repos.getContent({
-        owner,
-        repo,
-        path: '',
-      });
+      const response = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents`
+      );
+      const files = await response.json();
 
       const markdownFiles = files.filter(
         (file) => file.type === 'file' && file.name.endsWith('.md')
       );
 
       const markdownPromises = markdownFiles.map(async (file) => {
-        const { data } = await octokit.rest.repos.getContent({
-          owner,
-          repo,
-          path: file.path,
-        });
+        const fileResponse = await fetch(file.url);
+        const fileData = await fileResponse.json();
 
-        const content = atob(data.content);
+        const content = atob(fileData.content);
         const html = marked(content);
         return { name: file.name, html };
       });
