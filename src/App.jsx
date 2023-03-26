@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import axios from 'axios';
 import ChatGPT from './gpt';
+import { Octokit } from "@octokit/rest";
 
 function App() {
   const [githubLink, setGithubLink] = useState('');
