@@ -3,6 +3,8 @@ import './App.css';
 import axios from 'axios';
 import ChatGPT from './gpt';
 import 'isomorphic-fetch';
+import { marked } from 'marked';
+
 
 
 function App() {
